@@ -4,6 +4,7 @@ import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
 import { useState } from "react";
 import { Container } from "@mui/system";
 import Catalog from "../../features/catalog/Catalog";
+import ProductList from "../../features/catalog/ProductList";
 
 
 
@@ -25,6 +26,7 @@ export default function App() {
         <Header headleMode={headlemode}/>
         <Container>
           <Catalog />
+          {/* <ProductList /> */}
         </Container>
       </ThemeProvider>
     </>
