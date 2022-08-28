@@ -15,20 +15,20 @@ import ProductList from "./ProductList";
 export default function Catalog() {
   const [products, setProducts] = useState<Product[]>([])
 
-  useEffect(() => {
-    fetch("http://localhost:5000/api/Product")
-      .then((response) => response.json())
-      .then((data) => setProducts(data));
-  }, []);
-
-
   // useEffect(() => {
   //   fetch("http://localhost:5000/api/Product")
-  //   .then((response) => response.json())
-  //   .then((data)=>setProducts(data))
-  //   .catch((error) => console.error(error))
-    
+  //     .then((response) => response.json())
+  //     .then((data) => setProducts(data));
   // }, []);
+
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/Product")
+    .then((response) => response.json())
+    .then((data)=>setProducts(data))
+    .catch((error) => console.error(error))
+    
+  }, []);
   
   // const data = Array.from(Array(100).keys());
 
