@@ -1,9 +1,10 @@
 using API.Data;
+using API.Middleware;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 // Add services to the container.
 
@@ -12,7 +13,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<StoreContext>(opt=>{
+builder.Services.AddDbContext<StoreContext>(opt =>
+{
     opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
@@ -20,15 +22,15 @@ builder.Services.AddDbContext<StoreContext>(opt=>{
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: MyAllowSpecificOrigins,
-                      policy  =>
+                      policy =>
                       {
-                        policy.AllowAnyHeader()
-                        .AllowAnyMethod()
-                        // .AllowCredentials()
-                        .AllowAnyOrigin();
-                        // .WithOrigins("http://localhost:3000");
-                        //   policy.WithOrigins("http://example.com",
-                        //                       "http://www.contoso.com");
+                          policy.AllowAnyHeader()
+                          .AllowAnyMethod()
+                          // .AllowCredentials()
+                          .AllowAnyOrigin();
+                          // .WithOrigins("http://localhost:3000");
+                          //   policy.WithOrigins("http://example.com",
+                          //                       "http://www.contoso.com");
                       });
 });
 #endregion
@@ -36,19 +38,19 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 #region  //สร้างข้อมูลจำลอง Fake data
-        using var scope = app.Services.CreateScope(); //using หลังทำงานเสร็จจะถูกทำลายจากMemory
-        var context = scope.ServiceProvider.GetRequiredService<StoreContext>();
-        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+using var scope = app.Services.CreateScope(); //using หลังทำงานเสร็จจะถูกทำลายจากMemory
+var context = scope.ServiceProvider.GetRequiredService<StoreContext>();
+var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
 
-        try
-        {
-            await context.Database.MigrateAsync();   //สร้าง DB ให้อัตโนมัติถ้ายังไม่มี
-            await DbInitializer.Initialize(context); //สร้างข้อมูลสินค้าจำลอง
-        }
-        catch (Exception ex)
-        {
-            logger.LogError(ex, "Problem migrating data");
-        }
+try
+{
+    await context.Database.MigrateAsync();   //สร้าง DB ให้อัตโนมัติถ้ายังไม่มี
+    DbInitializer.Initialize(context); //สร้างข้อมูลสินค้าจำลอง
+}
+catch (Exception ex)
+{
+    logger.LogError(ex, "Problem migrating data");
+}
 #endregion
 
 
@@ -60,6 +62,12 @@ if (app.Environment.IsDevelopment())
 }
 
 // app.UseHttpsRedirection();  Web
+
+
+#region ส่ง error ไปให้ Axios ตอนทำ Interceptor
+  app.UseMiddleware<ExceptionMiddleware>(); 
+#endregion
+
 
 app.UseRouting();
 

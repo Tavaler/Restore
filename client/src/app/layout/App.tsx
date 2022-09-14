@@ -10,6 +10,10 @@ import HomePage from "../../features/home/HomePage";
 import ProductDetails from "../../features/catalog/ProductDetails";
 import AboutPage from "../../features/about/AboutPage";
 import { ContactPage } from "@mui/icons-material";
+import NotFound from "../error/NotFound";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import ServerError from "../error/ServerError";
 
 
 
@@ -27,6 +31,12 @@ export default function App() {
   return (
     <>
       <ThemeProvider theme={darkTheme}>
+
+      <ToastContainer
+          position="bottom-right"
+          hideProgressBar
+          theme="colored"
+        />
       <CssBaseline />
         <Header headleMode={headlemode}/>
         <Container>
@@ -36,6 +46,10 @@ export default function App() {
             <Route path="/catalog/:id" element={<ProductDetails />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
+            <Route path="/notfound" element={<NotFound />} />
+            <Route path="/server-error" element={<ServerError />} />
+
+
           </Routes>
           {/* <Catalog /> */}
           {/* <ProductList /> */}
