@@ -22,15 +22,12 @@ builder.Services.AddDbContext<StoreContext>(opt =>
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: MyAllowSpecificOrigins,
-                      policy =>
+                      policy =>                                                                    
                       {
-                          policy.AllowAnyHeader()
-                          .AllowAnyMethod()
-                          // .AllowCredentials()
-                          .AllowAnyOrigin();
-                          // .WithOrigins("http://localhost:3000");
-                          //   policy.WithOrigins("http://example.com",
-                          //                       "http://www.contoso.com");
+                          policy.AllowAnyHeader().
+                          AllowAnyMethod()
+                          .AllowCredentials()
+                          .WithOrigins("http://127.0.0.1:5173");
                       });
 });
 #endregion
@@ -65,7 +62,7 @@ if (app.Environment.IsDevelopment())
 
 
 #region ส่ง error ไปให้ Axios ตอนทำ Interceptor
-  app.UseMiddleware<ExceptionMiddleware>(); 
+app.UseMiddleware<ExceptionMiddleware>();
 #endregion
 
 
