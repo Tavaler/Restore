@@ -1,16 +1,12 @@
-import { Button, Container, Divider, Paper, Typography } from "@mui/material";
+import { Container, Paper, Typography, Divider, Button } from "@mui/material";
+import React from "react";
 import { useLocation } from "react-router-dom";
-import { history } from "../../main";
-// import { history } from "../../main";
+import { history } from "../..";
 
-//history มาจาก index.tsx
-
-export default function ServerError() {
-  //อ่านออบเจคที่แนบมากับ agent.tsx (history.push('/server-error', { state: data }))
+function ServerError() {
   const { state } = useLocation();
 
   var state1 = JSON.parse(JSON.stringify(state));
-  console.log(state1);
 
   return (
     <Container component={Paper}>
@@ -35,3 +31,5 @@ export default function ServerError() {
     </Container>
   );
 }
+
+export default ServerError;

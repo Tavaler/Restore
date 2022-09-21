@@ -3,7 +3,7 @@ export interface Basket {
     buyerId: string;
     items:   BasketItem[];
 }
- 
+
 export interface BasketItem {
     productId:  number;
     name:       string;

@@ -1,38 +1,34 @@
+import * as React from "react";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
 import {
-  AppBar,
   Badge,
-  Box,
-  Button,
   IconButton,
   List,
   ListItem,
+  ListItemButton,
+  ListItemIcon,
   Switch,
-  Toolbar,
-  Typography,
 } from "@mui/material";
-import React from "react";
-import MenuIcon from "@mui/icons-material/Menu";
-import { green } from "@mui/material/colors";
-import { color } from "@mui/system";
-
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useStoreContext } from "../context/StoreContext";
-import { Link } from "react-router-dom";
+import { ShoppingCart } from "@mui/icons-material";
+import { useAppDispatch, useAppSelector } from "../store/configureStore";
 
 const midLinks = [
   { title: "catalog", path: "/catalog" },
   { title: "about", path: "/about" },
   { title: "contact", path: "/contact" },
-  // { title: "notfound", path: "/notfound" },
-
 ];
 
 const rightLinks = [
   { title: "login", path: "/login" },
   { title: "register", path: "/register" },
 ];
-
 const navStyles = {
   color: "inherit",
   textDecoration: "none",
@@ -45,13 +41,13 @@ const navStyles = {
   },
 };
 
-export default function Header(props: any) {
+const Header = (props: any) => {
   
-  const { basket } = useStoreContext();
+  // const { basket } = useStoreContext();
+  const { basket } = useAppSelector(state=>state.basket)
   const itemCount = basket?.items.reduce((sum, item) => sum + item.quantity, 0);
-
   return (
-    <Box sx={{ flexGrow: 1,m:2 }}>
+    <Box sx={{ flexGrow: 1, mb: 5 }}>
       <AppBar position="static">
         <Toolbar
           sx={{
@@ -61,56 +57,36 @@ export default function Header(props: any) {
           }}
         >
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-            >
-              <Switch
-                defaultChecked
-                color="warning"
-                onChange={props.headleMode}
-              />
+            <Switch
+              defaultChecked
+              color="default"
+              onChange={props.handleMode}
+            />
 
-              {/* <MenuIcon /> */}
-              {/* <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            bbbbbbbb
-          </Typography> */}
-            </IconButton>
-
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              RESTORE
+            <Typography variant="h6" component="div">
+              YEDOM
             </Typography>
           </Box>
+          <List sx={{ display: "flex" }}>
+            {midLinks.map(({ title, path }) => (
+              <ListItem component={NavLink} to={path} key={path} sx={navStyles}>
+                {title}
+              </ListItem>
+            ))}
+          </List>
 
-          <Box>
-            <List sx={{ display: "flex" }}>
-              {midLinks.map(({ title, path }) => (
-                <ListItem
-                  component={NavLink}
-                  to={path}
-                  key={path}
-                  sx={navStyles}
-                >
-                  {title}
-                </ListItem>
-              ))}
-            </List>
-          </Box>
-
-          <Box sx={{ display: "flex", alignItems: "center", marginRight: 1 }}>
-            <Badge color="secondary" badgeContent={itemCount}>
-              <IconButton 
-              component={Link} 
-              to={"/basket"} 
-              size="large" 
-              color="inherit">
-                <ShoppingCartIcon />
-              </IconButton>
-            </Badge>
-
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <IconButton
+              component={Link}
+              to="/basket"
+              aria-label="cart"
+              sx={{ color: "inherit" }}
+              size="large"
+            >
+              <Badge badgeContent={itemCount} color="warning">
+                <ShoppingCart />
+              </Badge>
+            </IconButton>
             <List sx={{ display: "flex" }}>
               {rightLinks.map(({ title, path }) => (
                 <ListItem
@@ -128,4 +104,6 @@ export default function Header(props: any) {
       </AppBar>
     </Box>
   );
-}
+};
+
+export default Header;

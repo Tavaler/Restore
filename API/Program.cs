@@ -27,7 +27,9 @@ builder.Services.AddCors(options =>
                           policy.AllowAnyHeader().
                           AllowAnyMethod()
                           .AllowCredentials()
-                          .WithOrigins("http://127.0.0.1:5173");
+                        //   .WithOrigins("http://127.0.0.1:5173");
+                        .WithOrigins("http://localhost:3000");
+
                       });
 });
 #endregion

@@ -1,48 +1,49 @@
 import { LoadingButton } from "@mui/lab";
 import {
-  Divider,
   Grid,
+  Typography,
+  Divider,
+  TableContainer,
   Table,
   TableBody,
-  TableCell,
-  TableContainer,
   TableRow,
+  TableCell,
   TextField,
-  Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import agent from "../../app/api/agent";
-import { useStoreContext } from "../../app/context/StoreContext";
-import NotFound from "../../app/error/NotFound";
-import LoadingComponent from "../../app/layout/LoadingComponent";
-import { Product } from "../../app/models/Product";
- 
-export default function ProductDetails() {
-  const { id } = useParams<{ id: any }>(); //อ่านค่าจากพารามิเตอร์ที่ส่งมาตามพาท (URL Parameters)
+import agent from "../../App/api/agent";
+import { useStoreContext } from "../../App/context/StoreContext";
+import NotFound from "../../App/errors/NotFound";
+import LoadingComponent from "../../App/layout/LoadingComponent";
+import { Product } from "../../App/model/Product";
+
+const ProductDetail = () => {
+  const { id } = useParams<{ id: any }>();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
- 
+
   const { basket, setBasket, removeItem } = useStoreContext();
   const [quantity, setQuantity] = useState(0);
   const [submitting, setSubmitting] = useState(false);
+  // ไปดูในตะกร้าก่อนว่ามีหรือไม่มี
   const item = basket?.items.find((i) => i.productId === product?.id);
- 
+
   useEffect(() => {
     if (item) setQuantity(item.quantity);
- 
     agent.Catalog.details(parseInt(id))
-      .then((product) => setProduct(product))
-      .catch((error) => console.log(error.response.data))
+      .then((response) => setProduct(response))
+      .catch((error) => console.log(error))
       .finally(() => setLoading(false));
   }, [id, item]);
- 
+
   function handleInputChange(event: any) {
     if (event.target.value >= 0) {
       setQuantity(parseInt(event.target.value));
     }
   }
- 
+
   function handleUpdateCart() {
     setSubmitting(true);
     if (!item || quantity > item.quantity) {
@@ -59,11 +60,9 @@ export default function ProductDetails() {
         .finally(() => setSubmitting(false));
     }
   }
- 
+
   if (loading) return <LoadingComponent message="Loading Products....." />;
- 
   if (!product) return <NotFound />;
- 
   return (
     <Grid container spacing={6}>
       <Grid item xs={6}>
@@ -101,7 +100,7 @@ export default function ProductDetails() {
             </TableBody>
           </Table>
         </TableContainer>
- 
+        <h1></h1>
         <Grid container spacing={2}>
           <Grid item xs={6}>
             <TextField
@@ -130,8 +129,9 @@ export default function ProductDetails() {
             </LoadingButton>
           </Grid>
         </Grid>
-        
       </Grid>
     </Grid>
   );
-}
+};
+
+export default ProductDetail;
