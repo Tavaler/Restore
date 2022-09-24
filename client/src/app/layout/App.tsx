@@ -70,6 +70,8 @@ export default function ButtonAppBar() {
             <Route path="*" element={<NotFound />} />
             <Route path="/basket" element={<BasketPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
+            {/* <Route path="/checkout" element={<CheckoutPage />} /> */}
+
           </Routes>
         </Container>
       </ThemeProvider>

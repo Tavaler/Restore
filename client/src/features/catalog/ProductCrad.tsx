@@ -23,7 +23,6 @@ interface Props {
 }
 
 const ProductCrad = ({ product }: Props) => {
-
   const { status } = useAppSelector((state) => state.basket);
   const dispatch =  useAppDispatch();
  
@@ -64,6 +63,7 @@ const ProductCrad = ({ product }: Props) => {
           </Typography>
         </CardContent>
         <CardActions>
+
           <LoadingButton
             loading={status === "pendingAddItem" + product.id}
             onClick={() => dispatch(addBasketItemAsync({
@@ -78,6 +78,7 @@ const ProductCrad = ({ product }: Props) => {
           <Button component={Link} to={`/catalog/${product.id}`} size="small">
             View
           </Button>
+          
         </CardActions>
       </Card>
     </>

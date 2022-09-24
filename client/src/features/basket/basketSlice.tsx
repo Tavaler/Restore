@@ -15,7 +15,7 @@ const initialState: BasketState = {
 
 //createAsyncThunk<return, input parameter, {}>
 // thunk API.rejectWithValue
-export const addBasketItemAsync = createAsyncThunk<Basket,{ productId :number, quantity:number }>(
+export const addBasketItemAsync = createAsyncThunk<Basket,{ productId :number, quantity?:number }>(
   'basket/addBasketItemAsync',
   async ({ productId, quantity = 1 }, thunkAPI) => {
       try {
@@ -54,11 +54,15 @@ export const basketSlice = createSlice({
       if (itemIndex >= 0) {
         items[itemIndex].quantity -= quantity;
         if (items[itemIndex].quantity === 0) items.splice(itemIndex, 1);
-        setBasket((prevState: any) => {
-          return { ...prevState!, items };
-        });
+
+        // setBasket((prevState: any) => {
+        //   return { ...prevState!, items };
+        // });
       }
     },
+
+
+
   },
 
   extraReducers: (builder) => {
@@ -77,8 +81,34 @@ export const basketSlice = createSlice({
       console.log(action.payload);
     });
 
+    ////////////////// remove
+
+    builder.addCase(removeBasketItemAsync.pending, (state, action) => {
+      state.status =
+        "pendingRemoveItem" + action.meta.arg.productId + action.meta.arg.name;
+    });
+    builder.addCase(removeBasketItemAsync.fulfilled, (state, action) => {
+      const { productId, quantity } = action.meta.arg;
+      const itemIndex = state.basket?.items.findIndex(
+        (i) => i.productId === productId
+      );
+      if (itemIndex === -1 || itemIndex === undefined) return;
+      state.basket!.items[itemIndex].quantity -= quantity;
+      if (state.basket?.items[itemIndex].quantity === 0)
+        state.basket.items.splice(itemIndex, 1);
+      state.status = "idle";
+    });
+    builder.addCase(removeBasketItemAsync.rejected, (state, action) => {
+      console.log(action.payload);
+      state.status = "idle";
+    });
+
+
 
   },
+
+
+
 });
 
 // Action creators are generated for each case reducer function
