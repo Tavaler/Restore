@@ -6,7 +6,6 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
-import { useStoreContext } from "../../App/context/StoreContext";
 import { currencyFormat } from "../../App/util/util";
 import { LoadingButton } from "@mui/lab";
 import { Add, Delete, Remove } from "@mui/icons-material";
@@ -25,7 +24,7 @@ export default function BasketPage() {
   });
 
   const dispatch =  useAppDispatch()
-  const { basket} = useAppSelector(state=>state.basket)
+  const { basket } = useAppSelector(state=>state.basket)
   // const { removeItem } = useStoreContext();
 
 
