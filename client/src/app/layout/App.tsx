@@ -26,6 +26,7 @@ export default function ButtonAppBar() {
  // const { setBasket } = useStoreContext(); //ควบคุมสเตทด้วย React context to Centralize
   const [loading, setLoading] = useState(true);
   
+  
   useEffect(() => {
     const buyerId = getCookie("buyerId");
     if (buyerId) {
