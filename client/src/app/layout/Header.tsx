@@ -18,6 +18,7 @@ import { Link, NavLink } from "react-router-dom";
 import { useStoreContext } from "../context/StoreContext";
 import { ShoppingCart } from "@mui/icons-material";
 import { useAppDispatch, useAppSelector } from "../store/configureStore";
+import SignedinMenu from "./SignedinMenu";
 
 const midLinks = [
   { title: "catalog", path: "/catalog" },
@@ -43,7 +44,7 @@ const navStyles = {
 
 const Header = (props: any) => {
   
-  // const { basket } = useStoreContext();
+  const { user } = useAppSelector((state) => state.account);
   const { basket } = useAppSelector(state=>state.basket)
   const itemCount = basket?.items.reduce((sum, item) => sum + item.quantity, 0);
   return (
@@ -87,18 +88,25 @@ const Header = (props: any) => {
                 <ShoppingCart />
               </Badge>
             </IconButton>
-            <List sx={{ display: "flex" }}>
-              {rightLinks.map(({ title, path }) => (
-                <ListItem
-                  component={NavLink}
-                  to={path}
-                  key={path}
-                  sx={navStyles}
-                >
-                  {title}
-                </ListItem>
-              ))}
-            </List>
+
+            {user ? (
+              <SignedinMenu />
+            ) : (
+              <List sx={{ display: "flex" }}>
+                {rightLinks.map(({ title, path }) => (
+                  <ListItem
+                    component={NavLink}
+                    to={path}
+                    key={path}
+                    sx={{ color: "inherit", typography: "h6" }}
+                  >
+                    {title.toUpperCase()}
+                  </ListItem>
+                ))}
+              </List>
+            )}
+
+
           </Box>
         </Toolbar>
       </AppBar>

@@ -1,6 +1,7 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit'
 import agent from '../../App/api/agent';
 import { Basket } from '../../App/model/Basket'
+import { getCookie } from '../../App/util/util';
 
 
 export interface BasketState {
@@ -13,8 +14,27 @@ const initialState: BasketState = {
   status: 'idle'
 }
 
+
+export const fetchBasketAsync = createAsyncThunk<Basket>(
+  "basket/fetchBasketAsync",
+  async (_, thunkAPI) => {
+    try {
+      return await agent.Basket.get();
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({ error: error.data });
+    }
+  },
+  {
+    condition: () => {
+      if (!getCookie("buyerId")) return false;
+    },
+  }
+);
+
+
 //createAsyncThunk<return, input parameter, {}>
 // thunk API.rejectWithValue
+//createAsyncThunk<ชนิดพารามิเตอร์ที่ return ออก , {พารามิเตอร์ที่รับเข้ามา}>
 export const addBasketItemAsync = createAsyncThunk<Basket,{ productId :number, quantity?:number }>(
   'basket/addBasketItemAsync',
   async ({ productId, quantity = 1 }, thunkAPI) => {
@@ -26,6 +46,7 @@ export const addBasketItemAsync = createAsyncThunk<Basket,{ productId :number, q
   }
 )
 
+//createAsyncThunk<ชนิดพารามิเตอร์ที่ return ออก , {พารามิเตอร์ที่รับเข้ามา}>
 export const removeBasketItemAsync = createAsyncThunk<void, { productId: number, quantity: number, name?: string }>(
   'basket/removeBasketItemAsync',
   async ({ productId, quantity }, thunkAPI) => {
@@ -46,20 +67,10 @@ export const basketSlice = createSlice({
     setBasket: (state, action) => {
       state.basket = action.payload;
     },
+    clearBasket: (state) => {
+      state.basket = null;
+  },
 
-    removeItem: (state, action) => {
-      const { productId, quantity } = action.payload;
-      const { items } = state.basket!;
-      const itemIndex = items.findIndex((i) => i.productId === productId);
-      if (itemIndex >= 0) {
-        items[itemIndex].quantity -= quantity;
-        if (items[itemIndex].quantity === 0) items.splice(itemIndex, 1);
-
-        // setBasket((prevState: any) => {
-        //   return { ...prevState!, items };
-        // });
-      }
-    },
 
 
 
@@ -71,15 +82,15 @@ export const basketSlice = createSlice({
       state.status = "pendingAddItem" + action.meta.arg.productId;
     });
 
-    builder.addCase(addBasketItemAsync.fulfilled, (state, action) => {
-      state.basket = action.payload;
-      state.status = "idle";
-    });
+    // builder.addCase(addBasketItemAsync.fulfilled, (state, action) => {
+    //   state.basket = action.payload;
+    //   state.status = "idle";
+    // });
 
-    builder.addCase(addBasketItemAsync.rejected, (state, action) => {
-      state.status = "idle";
-      console.log(action.payload);
-    });
+    // builder.addCase(addBasketItemAsync.rejected, (state, action) => {
+    //   state.status = "idle";
+    //   console.log(action.payload);
+    // });
 
     ////////////////// remove
 
@@ -104,14 +115,26 @@ export const basketSlice = createSlice({
     });
 
 
+    builder.addMatcher(
+      isAnyOf(addBasketItemAsync.fulfilled, fetchBasketAsync.fulfilled),
+      (state, action) => {
+        state.basket = action.payload;
+        state.status = "idle";
+      }
+    );
+    builder.addMatcher(
+      isAnyOf(addBasketItemAsync.rejected, fetchBasketAsync.rejected),
+      (state, action) => {
+        console.log(action.payload);
+        state.status = "idle";
+      }
+    );
 
   },
-
-
 
 });
 
 // Action creators are generated for each case reducer function
-export const { setBasket,removeItem } = basketSlice.actions
+export const { setBasket,clearBasket } = basketSlice.actions
 
 export default basketSlice.reducer

@@ -1,13 +1,38 @@
 using API.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace API.Data
 {
     public static class DbInitializer
     {
         //public static void Initialize(StoreContext context)
-        public static async Task Initialize(StoreContext context)
-
+        public static async Task Initialize(StoreContext context,UserManager<User> userManager)
         {
+
+            #region Identityสร้างข้อมูล User
+            if (!userManager.Users.Any())
+            {
+                var user = new User
+                {
+                    UserName = "mos",
+                    Email = "mos@gmail.com"
+                };
+ 
+                await userManager.CreateAsync(user, "Pa$$w0rd"); //ทำการ hash Password
+                await userManager.AddToRoleAsync(user, "Member"); // มี Role เดียว
+ 
+                var admin = new User
+                {
+                    UserName = "admin",
+                    Email = "admin@gmail.com"
+                };
+ 
+                await userManager.CreateAsync(admin, "Pa$$w0rd"); //ทำการ hash Password
+                await userManager.AddToRolesAsync(admin, new[] { "Member", "Admin" }); //มีหลาย Roles
+            }
+            #endregion
+
+
             if (context.Products.Any()) return;
 
             var products = new List<Product>
@@ -209,6 +234,8 @@ namespace API.Data
                     QuantityInStock = 100
                 },
             };
+
+            
 
             foreach (var product in products)
             {

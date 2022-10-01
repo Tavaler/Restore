@@ -3,6 +3,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { history } from "../..";
 import { PaginatedResponse } from "../model/pagination";
+import { store } from "../store/configureStore";
 
 axios.defaults.baseURL = "http://localhost:5000/api/";
 axios.defaults.withCredentials = true; //อนุญําตให้เข้ําถึงคุกกี้ที่ browser ได้
@@ -11,10 +12,24 @@ const ResponseBody = (response: AxiosResponse) => response.data;
 
 const sleep = () => new Promise((_) => setTimeout(_, 500));
 
-axios.interceptors.response.use(
-  async (response) => {
-    await sleep();
 
+//แนบ token ไปกับ Header
+axios.interceptors.request.use((config: any) => {
+  const token = store.getState().account.user?.token; //เรียกใช้ State โดยตรง
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+})
+
+
+//You can intercept requests or responses before they are handled by then or catch.
+//.use มี Promise คือ onFullfill กรณีสำเร็จ onReject กรณีมีข้อผิดพลาด
+axios.interceptors.response.use(async response => {
+ 
+  //if(process.env.NODE_ENV === 'development') await sleep()
+
+  await sleep()
+
+  //ส่งค่ามาจากฝั่ง API Response.AddPaginationHeader(products.MetaData); 
     const pagination = response.headers['pagination']; //ส่งมาจาก ProductController
     if (pagination) {
         response.data = new PaginatedResponse(response.data, JSON.parse(pagination));
@@ -60,6 +75,8 @@ axios.interceptors.response.use(
 );
 
 
+
+
 //params?: URLSearchParams ใช้รับค่าพารามิเตอ์แบบออบเจคที่มีหลายๆค่า เทีบบเท่า query string
 const requests = {
     get: (url: string, params?: URLSearchParams) => axios.get(url, {params}).then(ResponseBody),
@@ -91,11 +108,18 @@ const Basket = {
 
 }
 
+const Account = {
+  login: (values: any) => requests.post('account/login', values),
+  register: (values: any) => requests.post('account/register', values),
+  currentUser: () => requests.get('account/currentUser'),
+}
+
 
 const agent = {
   Catalog,
   TestErrors,
-  Basket
+  Basket,
+  Account
 };
 
 export default agent;
