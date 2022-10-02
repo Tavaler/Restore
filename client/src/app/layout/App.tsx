@@ -21,6 +21,7 @@ import Login from "../../features/account/Login";
 import Register from "../../features/account/Register";
 import { fetchCurrentUser } from "../../features/account/accountSlice";
 import { PrivateLogin, PrivateRoute } from "./PrivateRoute";
+import OrderPage from "../../features/orders/OrderPage";
 
 export default function ButtonAppBar() {
   const dispatch = useAppDispatch();
@@ -77,6 +78,7 @@ export default function ButtonAppBar() {
             
             <Route element={<PrivateRoute />}>
               <Route path="/checkout" element={<CheckoutPage />} />
+              <Route path="/orders" element={<OrderPage/>}/>
             </Route>
 
             {/* <Route path="/login" element={<Login />} /> */}

@@ -35,7 +35,7 @@ export default function SignedinMenu() {
         }}
       >
         <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem component={Link} to="/order">
+        <MenuItem component={Link} to="/orders">
           My orders
         </MenuItem>
         <MenuItem
