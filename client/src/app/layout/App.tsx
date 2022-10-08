@@ -22,6 +22,7 @@ import Register from "../../features/account/Register";
 import { fetchCurrentUser } from "../../features/account/accountSlice";
 import { PrivateLogin, PrivateRoute } from "./PrivateRoute";
 import OrderPage from "../../features/orders/OrderPage";
+import CheckoutWrapper from "../../features/checkout/CheckoutWrapper";
 
 export default function ButtonAppBar() {
   const dispatch = useAppDispatch();
@@ -77,7 +78,7 @@ export default function ButtonAppBar() {
             <Route path="/basket" element={<BasketPage />} />
             
             <Route element={<PrivateRoute />}>
-              <Route path="/checkout" element={<CheckoutPage />} />
+              <Route path="/checkout" element={<CheckoutWrapper />} />
               <Route path="/orders" element={<OrderPage/>}/>
             </Route>
 

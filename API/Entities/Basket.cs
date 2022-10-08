@@ -6,7 +6,9 @@ namespace API.Entities
         public string BuyerId {get ; set;}
         
         //สร้างไฟล์ BasketItems ให้โดยอัตโนมัติ
-        public List<BasketItem> Items { get; set; } = new();
+        public List<BasketItem> Items { get; set; } = new(); //Include BasketItem มาโดยอัตโนมัติ
+        public string? PaymentIntentId { get; set; }
+        public string? ClientSecret { get; set; }
  
         public void AddItem(Product product, int quantity)
         {
