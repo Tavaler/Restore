@@ -54,7 +54,8 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddDbContext<StoreContext>(opt =>
 {
-    opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
+      opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+    // opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
 #region CORS
@@ -146,12 +147,20 @@ app.UseMiddleware<ExceptionMiddleware>();
 
 
 app.UseRouting();
+app.UseDefaultFiles(); // อนุญาตให้เรียกไฟล์ต่างๆ ใน wwwroot
+app.UseStaticFiles();  // อนุญาตให้เข้าถึงไฟล์ค่าคงที่ได้
 
 app.UseCors(MyAllowSpecificOrigins);
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapFallbackToController("Index", "Fallback");
+});
+
+//app.MapControllers();
 
 await app.RunAsync();

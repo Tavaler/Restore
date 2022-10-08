@@ -24,15 +24,10 @@ interface Props {
 
 const ProductCrad = ({ product }: Props) => {
   const { status } = useAppSelector((state) => state.basket);
-<<<<<<< HEAD:src/features/catalog/ProductCard.tsx
   const dispatch =  useAppDispatch();
  
   
 
-=======
-  const dispatch = useAppDispatch();
-  
->>>>>>> 3ff57e8fc4efaa7b045ef710d46d5302cfd783e2:src/features/catalog/ProductCrad.tsx
   return (
     <>
       <Card sx={{ maxWidth: "100%" }}>
@@ -70,17 +65,12 @@ const ProductCrad = ({ product }: Props) => {
         <CardActions>
 
           <LoadingButton
-<<<<<<< HEAD:src/features/catalog/ProductCard.tsx
             loading={status === "pendingAddItem" + product.id}
             onClick={() => dispatch(addBasketItemAsync({
               productId: product.id,
               quantity: 1
             }))
           }
-=======
-            loading={status ==="pendingAddItem" + product.id}
-            onClick={() =>dispatch(addBasketItemAsync({ productId: product.id }))}
->>>>>>> 3ff57e8fc4efaa7b045ef710d46d5302cfd783e2:src/features/catalog/ProductCrad.tsx
             size="small"
           >
             Add To Cart

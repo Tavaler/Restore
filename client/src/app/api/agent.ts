@@ -8,6 +8,10 @@ import { store } from "../store/configureStore";
 axios.defaults.baseURL = "http://localhost:5000/api/";
 axios.defaults.withCredentials = true; //อนุญําตให้เข้ําถึงคุกกี้ที่ browser ได้
 
+axios.defaults.baseURL = process.env.REACT_APP_API_URL
+ 
+// if(process.env.NODE_ENV === 'development') await sleep()
+
 const ResponseBody = (response: AxiosResponse) => response.data;
 
 //แนบ token ไปกับ Header
@@ -19,7 +23,6 @@ axios.interceptors.request.use((config: any) => {
 
 const sleep = () => new Promise((_) => setTimeout(_, 500));
 
-<<<<<<< HEAD
 
 //แนบ token ไปกับ Header
 axios.interceptors.request.use((config: any) => {
@@ -32,10 +35,7 @@ axios.interceptors.request.use((config: any) => {
 //You can intercept requests or responses before they are handled by then or catch.
 //.use มี Promise คือ onFullfill กรณีสำเร็จ onReject กรณีมีข้อผิดพลาด
 axios.interceptors.response.use(async response => {
- 
-  //if(process.env.NODE_ENV === 'development') await sleep()
-
-  await sleep()
+  if(process.env.NODE_ENV === 'development')  await sleep()
 
   //ส่งค่ามาจากฝั่ง API Response.AddPaginationHeader(products.MetaData); 
     const pagination = response.headers['pagination']; //ส่งมาจาก ProductController
@@ -44,21 +44,6 @@ axios.interceptors.response.use(async response => {
         return response;
     }
     
-=======
-axios.interceptors.response.use(
-  async (response) => {
-    await sleep();
-
-    const pagination = response.headers["pagination"]; //ส่งมําจําก ProductController
-    if (pagination) {
-      response.data = new PaginatedResponse(
-        response.data,
-        JSON.parse(pagination)
-      );
-      return response;
-    }
-
->>>>>>> 3ff57e8fc4efaa7b045ef710d46d5302cfd783e2
     return response;
   },
   (error: AxiosError) => {
@@ -97,10 +82,6 @@ axios.interceptors.response.use(
   }
 );
 
-<<<<<<< HEAD
-
-
-
 //params?: URLSearchParams ใช้รับค่าพารามิเตอ์แบบออบเจคที่มีหลายๆค่า เทีบบเท่า query string
 const requests = {
     get: (url: string, params?: URLSearchParams) => axios.get(url, {params}).then(ResponseBody),
@@ -115,21 +96,6 @@ const Catalog = {
     details: (id: number) => requests.get(`products/${id}`),
     fetchFilters: () => requests.get('products/filters'),
 }
-
-=======
-const requests = {
-  get: (url: string, params?: URLSearchParams) =>
-    axios.get(url, { params }).then(ResponseBody),
-  post: (url: string, body: {}) => axios.post(url, body).then(ResponseBody),
-  delete: (url: string) => axios.delete(url).then(ResponseBody),
-};
-
-const Catalog = {
-  list: (params: URLSearchParams) => requests.get("products", params),
-  details: (id: number) => requests.get(`products/${id}`),
-  fetchFilters: () => requests.get("products/filters"),
-};
->>>>>>> 3ff57e8fc4efaa7b045ef710d46d5302cfd783e2
 
 const TestErrors = {
   get400Error: () => requests.get("buggy/GetBadRequest"),
@@ -162,24 +128,6 @@ const Orders = {
 const Payments = {
   createPaymentIntent: () => requests.post("payments", {}),
 };
-
-const Account = {
-  login: (values: any) => requests.post('account/login', values),
-  register: (values: any) => requests.post('account/register', values),
-  currentUser: () => requests.get('account/currentUser'),
-  fetchAddress: () => requests.get('account/savedAddress'),
-}
-
-
-const Orders = {
-  list: () => requests.get('orders'),
-  fetch: (id: number) => requests.get(`orders/${id}`),
-  create: (values: any) => requests.post('orders', values)
-}
-const Payments = {
-  createPaymentIntent: () => requests.post('payments', {})
-}
-
 
 
 const agent = {

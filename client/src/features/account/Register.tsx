@@ -1,15 +1,10 @@
 import Avatar from "@mui/material/Avatar";
 import TextField from "@mui/material/TextField";
-<<<<<<< HEAD
-=======
-import Link from "@mui/material/Link";
->>>>>>> 3ff57e8fc4efaa7b045ef710d46d5302cfd783e2
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-<<<<<<< HEAD
 import { Paper } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -19,20 +14,6 @@ import agent from "../../App/api/agent";
 import { toast } from "react-toastify";
 
 export default function Register() {
-=======
-import { FieldValues, useForm } from "react-hook-form";
-import { Paper } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
-import { useAppDispatch } from "../../App/store/configureStore";
-import { signInUser } from "./accountSlice";
-import { history } from "../..";
-import { toast } from "react-toastify";
-import agent from "../../App/api/agent";
-
-export default function Register() {
-  const dispatch = useAppDispatch();
-
->>>>>>> 3ff57e8fc4efaa7b045ef710d46d5302cfd783e2
   const {
     register,
     handleSubmit,
@@ -40,10 +21,7 @@ export default function Register() {
     formState: { isSubmitting, errors, isValid },
   } = useForm<{ username: ""; email: ""; password: "" }>({ mode: "all" });
 
-<<<<<<< HEAD
   //setError ระบุค่าผิดพลาดให้แสดงใหม่ ที่ส่งมาจาก API
-=======
->>>>>>> 3ff57e8fc4efaa7b045ef710d46d5302cfd783e2
   function handleApiErrors(errors: any) {
     if (errors) {
       errors.forEach((error: string) => {
@@ -58,15 +36,6 @@ export default function Register() {
     }
   }
 
-<<<<<<< HEAD
-=======
-  //FieldValues คือ ค่าทั้งหมดภายใน Form
-  async function submitForm(data: FieldValues) {
-    await dispatch(signInUser(data));
-    history.push("/catalog"); //มาจาก index.tsx
-  }
-
->>>>>>> 3ff57e8fc4efaa7b045ef710d46d5302cfd783e2
   return (
     <Container
       component={Paper}
@@ -80,11 +49,7 @@ export default function Register() {
     >
       <Box
         sx={{
-<<<<<<< HEAD
           marginTop: 2,
-=======
-          marginTop: 8,
->>>>>>> 3ff57e8fc4efaa7b045ef710d46d5302cfd783e2
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -111,14 +76,8 @@ export default function Register() {
         >
           <TextField
             margin="normal"
-<<<<<<< HEAD
             fullWidth
             label="User name"
-=======
-            required
-            fullWidth
-            label="Username"
->>>>>>> 3ff57e8fc4efaa7b045ef710d46d5302cfd783e2
             autoFocus
             {...register("username", { required: "Username is required" })}
             error={!!errors.username}
@@ -142,26 +101,14 @@ export default function Register() {
 
           <TextField
             margin="normal"
-<<<<<<< HEAD
             fullWidth
             label="Password"
             type="password"
-=======
-            required
-            fullWidth
-            label="Password"
-            type="password"
-            autoComplete="current-password"
->>>>>>> 3ff57e8fc4efaa7b045ef710d46d5302cfd783e2
             {...register("password", {
               required: "Password is required",
               pattern: {
                 value:
-<<<<<<< HEAD
                   /(?=^.{6,20}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?/&gt;.&lt;,])(?!.*\s).*$/,
-=======
-                  /(?=^.{6,10}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?/&gt;.&lt;,])(?!.*\s).*$/,
->>>>>>> 3ff57e8fc4efaa7b045ef710d46d5302cfd783e2
                 message: "Password is not complex enough",
               },
             })}
@@ -176,21 +123,11 @@ export default function Register() {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-<<<<<<< HEAD
             Register
           </LoadingButton>
           <Grid container>
             <Grid item>
             <Link to="/login">{"Already have an account? Sign in"}</Link>
-=======
-            Sign In
-          </LoadingButton>
-          <Grid container>
-            <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
->>>>>>> 3ff57e8fc4efaa7b045ef710d46d5302cfd783e2
             </Grid>
           </Grid>
         </Box>
