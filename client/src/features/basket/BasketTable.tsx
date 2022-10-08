@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Add, Delete, Remove } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import {
@@ -14,6 +15,24 @@ import { BasketItem } from "../../App/model/Basket";
 import { useAppDispatch, useAppSelector } from "../../App/store/configureStore";
 import { currencyFormat } from "../../App/util/util";
 import { addBasketItemAsync, removeBasketItemAsync } from "./basketSlice";
+=======
+import { Remove, Add, Delete } from "@mui/icons-material";
+import { LoadingButton } from "@mui/lab";
+import {
+  TableContainer,
+  Paper,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  Box,
+} from "@mui/material";
+import { BasketItem } from "../../App/model/Basket";
+import { useAppSelector, useAppDispatch } from "../../App/store/configureStore";
+import { currencyFormat } from "../../App/util/util";
+import { removeBasketItemAsync, addBasketItemAsync } from "./basketSlice";
+>>>>>>> 3ff57e8fc4efaa7b045ef710d46d5302cfd783e2
 
 interface Props {
   items: BasketItem[];
@@ -21,9 +40,14 @@ interface Props {
 }
 
 export default function BasketTable({ items, isBasket = true }: Props) {
+<<<<<<< HEAD
   const dispatch = useAppDispatch();
   const { basket, status } = useAppSelector((state) => state.basket);
 
+=======
+  const { basket, status } = useAppSelector((state) => state.basket);
+  const dispatch = useAppDispatch();
+>>>>>>> 3ff57e8fc4efaa7b045ef710d46d5302cfd783e2
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -32,8 +56,13 @@ export default function BasketTable({ items, isBasket = true }: Props) {
             <TableCell>Product</TableCell>
             <TableCell align="center">Price</TableCell>
             <TableCell align="center">Quantity</TableCell>
+<<<<<<< HEAD
             <TableCell align="center">Subtotal</TableCell>
             {isBasket &&<TableCell align="center"></TableCell>}
+=======
+            <TableCell align="right">Subtotal</TableCell>
+            {isBasket && <TableCell align="right"></TableCell>}
+>>>>>>> 3ff57e8fc4efaa7b045ef710d46d5302cfd783e2
           </TableRow>
         </TableHead>
         <TableBody>
@@ -54,6 +83,7 @@ export default function BasketTable({ items, isBasket = true }: Props) {
               </TableCell>
               <TableCell align="center">{currencyFormat(item.price)}</TableCell>
               <TableCell align="center">
+<<<<<<< HEAD
                 {isBasket && (
                   <LoadingButton
                     loading={
@@ -96,6 +126,41 @@ export default function BasketTable({ items, isBasket = true }: Props) {
               {isBasket && (
               <TableCell align="center">
                 <LoadingButton
+=======
+                {isBasket &&(<LoadingButton
+                  loading={
+                    status === "pendingRemoveItem" + item.productId + "rem"
+                  }
+                  onClick={() =>
+                    dispatch(
+                      removeBasketItemAsync({
+                        productId: item.productId,
+                        quantity: 1,
+                        name: "rem",
+                      })
+                    )
+                  }
+                  color="error"
+                >
+                  <Remove />
+                </LoadingButton>)}
+                {item.quantity}
+               {isBasket &&(<LoadingButton
+                  loading={status === "pendingAddItem" + item.productId}
+                  onClick={() =>
+                    dispatch(addBasketItemAsync({ productId: item.productId }))
+                  }
+                  color="error"
+                >
+                  <Add />
+                </LoadingButton>)}
+              </TableCell>
+              <TableCell align="right">
+                {currencyFormat(item.price * item.quantity)}
+              </TableCell>
+              {isBasket &&(<TableCell align="right">
+               <LoadingButton
+>>>>>>> 3ff57e8fc4efaa7b045ef710d46d5302cfd783e2
                   loading={
                     status === "pendingRemoveItem" + item.productId + "del"
                   }
@@ -112,9 +177,13 @@ export default function BasketTable({ items, isBasket = true }: Props) {
                 >
                   <Delete />
                 </LoadingButton>
+<<<<<<< HEAD
               </TableCell>
               )}
 
+=======
+              </TableCell>)}
+>>>>>>> 3ff57e8fc4efaa7b045ef710d46d5302cfd783e2
             </TableRow>
           ))}
         </TableBody>

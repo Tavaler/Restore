@@ -21,7 +21,10 @@ export function useStoreContext() {
 //1.สร้ํางสเตทไว้ภํายใน และน ําไปครอบ { children } ที่ต้องกํารใช้(Index.tsx)
 export function StoreProvider({ children }: PropsWithChildren<any>) {
   const [basket, setBasket] = useState<Basket | null>(null);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3ff57e8fc4efaa7b045ef710d46d5302cfd783e2
   
   function removeItem(productId: number, quantity: number) {
     if (!basket) return;

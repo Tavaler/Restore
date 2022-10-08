@@ -10,8 +10,16 @@ axios.defaults.withCredentials = true; //อนุญําตให้เข้
 
 const ResponseBody = (response: AxiosResponse) => response.data;
 
+//แนบ token ไปกับ Header
+axios.interceptors.request.use((config: any) => {
+  const token = store.getState().account.user?.token; //เรียกใช้State โดยตรง
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
+
 const sleep = () => new Promise((_) => setTimeout(_, 500));
 
+<<<<<<< HEAD
 
 //แนบ token ไปกับ Header
 axios.interceptors.request.use((config: any) => {
@@ -36,6 +44,21 @@ axios.interceptors.response.use(async response => {
         return response;
     }
     
+=======
+axios.interceptors.response.use(
+  async (response) => {
+    await sleep();
+
+    const pagination = response.headers["pagination"]; //ส่งมําจําก ProductController
+    if (pagination) {
+      response.data = new PaginatedResponse(
+        response.data,
+        JSON.parse(pagination)
+      );
+      return response;
+    }
+
+>>>>>>> 3ff57e8fc4efaa7b045ef710d46d5302cfd783e2
     return response;
   },
   (error: AxiosError) => {
@@ -64,7 +87,7 @@ axios.interceptors.response.use(async response => {
         toast.error(result.title);
         break;
       case 500:
-        history.push("/server-error",{state:data})
+        history.push("/server-error", { state: data });
         toast.error(result.title);
         break;
 
@@ -74,6 +97,7 @@ axios.interceptors.response.use(async response => {
   }
 );
 
+<<<<<<< HEAD
 
 
 
@@ -92,6 +116,20 @@ const Catalog = {
     fetchFilters: () => requests.get('products/filters'),
 }
 
+=======
+const requests = {
+  get: (url: string, params?: URLSearchParams) =>
+    axios.get(url, { params }).then(ResponseBody),
+  post: (url: string, body: {}) => axios.post(url, body).then(ResponseBody),
+  delete: (url: string) => axios.delete(url).then(ResponseBody),
+};
+
+const Catalog = {
+  list: (params: URLSearchParams) => requests.get("products", params),
+  details: (id: number) => requests.get(`products/${id}`),
+  fetchFilters: () => requests.get("products/filters"),
+};
+>>>>>>> 3ff57e8fc4efaa7b045ef710d46d5302cfd783e2
 
 const TestErrors = {
   get400Error: () => requests.get("buggy/GetBadRequest"),
@@ -102,11 +140,28 @@ const TestErrors = {
 };
 
 const Basket = {
-  get :()=>requests.get('basket'),
-  addItem : (productId:number,quantity=1)=>requests.post(`basket?productId=${productId}&quantity=${quantity}`,{}),
-  removeItem : (productId:number,quantity=1)=>requests.delete(`basket?productId=${productId}&quantity=${quantity}`)
+  get: () => requests.get("basket"),
+  addItem: (productId: number, quantity = 1) =>
+    requests.post(`basket?productId=${productId}&quantity=${quantity}`, {}),
+  removeItem: (productId: number, quantity = 1) =>
+    requests.delete(`basket?productId=${productId}&quantity=${quantity}`),
+};
 
-}
+const Account = {
+  login: (values: any) => requests.post("account/login", values),
+  register: (values: any) => requests.post("account/register", values),
+  currentUser: () => requests.get("account/currentUser"),
+  fetchAddress: () => requests.get("account/savedAddress"),
+};
+const Orders = {
+  list: () => requests.get("orders"),
+  fetch: (id: number) => requests.get(`orders/${id}`),
+  create: (values: any) => requests.post("orders", values),
+};
+
+const Payments = {
+  createPaymentIntent: () => requests.post("payments", {}),
+};
 
 const Account = {
   login: (values: any) => requests.post('account/login', values),

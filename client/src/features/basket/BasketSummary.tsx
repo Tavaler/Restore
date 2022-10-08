@@ -11,8 +11,12 @@ import { currencyFormat } from "../../App/util/util";
 
 
 export default function BasketSummary() {
+<<<<<<< HEAD
   // const { basket } = useStoreContext();
   const { basket } = useAppSelector(state=>state.basket)
+=======
+  const { basket } = useAppSelector(state=>state.basket);
+>>>>>>> 3ff57e8fc4efaa7b045ef710d46d5302cfd783e2
   const subtotal =
     basket?.items.reduce((sum, item) => sum + item.quantity * item.price, 0) ??
     0;

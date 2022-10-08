@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
@@ -42,6 +43,16 @@ const payments = [
 export default function Review() {
   const { basket } = useAppSelector((state) => state.basket);
 
+=======
+import * as React from "react";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import { useAppSelector } from "../../App/store/configureStore";
+import BasketTable from "../basket/BasketTable";
+import BasketSummary from "../basket/BasketSummary";
+export default function Review() {
+  const { basket } = useAppSelector((state) => state.basket);
+>>>>>>> 3ff57e8fc4efaa7b045ef710d46d5302cfd783e2
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -49,6 +60,7 @@ export default function Review() {
       </Typography>
       {basket && <BasketTable items={basket.items} isBasket={false} />}
       <Grid container>
+<<<<<<< HEAD
         <Grid item xs={6} sm={6}>
           
         </Grid>
@@ -59,8 +71,17 @@ export default function Review() {
           <Grid container>
           <BasketSummary />
           </Grid>
+=======
+        <Grid item xs={6} />
+        <Grid item xs={6}>
+          <BasketSummary />
+>>>>>>> 3ff57e8fc4efaa7b045ef710d46d5302cfd783e2
         </Grid>
       </Grid>
     </React.Fragment>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 3ff57e8fc4efaa7b045ef710d46d5302cfd783e2
