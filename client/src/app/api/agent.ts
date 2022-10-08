@@ -5,7 +5,7 @@ import { history } from "../..";
 import { PaginatedResponse } from "../model/pagination";
 import { store } from "../store/configureStore";
 
-axios.defaults.baseURL = "http://localhost:5000/api/";
+axios.defaults.baseURL = process.env.REACT_APP_API_URL
 axios.defaults.withCredentials = true; //อนุญําตให้เข้ําถึงคุกกี้ที่ browser ได้
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL
@@ -23,6 +23,7 @@ axios.interceptors.request.use((config: any) => {
 
 const sleep = () => new Promise((_) => setTimeout(_, 500));
 
+<<<<<<< HEAD
 
 //แนบ token ไปกับ Header
 axios.interceptors.request.use((config: any) => {
@@ -44,6 +45,20 @@ axios.interceptors.response.use(async response => {
         return response;
     }
     
+=======
+axios.interceptors.response.use(
+  async (response) => {
+    if(process.env.NODE_ENV === 'development') await sleep()
+    const pagination = response.headers["pagination"]; //ส่งมําจําก ProductController
+    if (pagination) {
+      response.data = new PaginatedResponse(
+        response.data,
+        JSON.parse(pagination)
+      );
+      return response;
+    }
+
+>>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
     return response;
   },
   (error: AxiosError) => {
@@ -82,6 +97,7 @@ axios.interceptors.response.use(async response => {
   }
 );
 
+<<<<<<< HEAD
 //params?: URLSearchParams ใช้รับค่าพารามิเตอ์แบบออบเจคที่มีหลายๆค่า เทีบบเท่า query string
 const requests = {
     get: (url: string, params?: URLSearchParams) => axios.get(url, {params}).then(ResponseBody),
@@ -96,6 +112,20 @@ const Catalog = {
     details: (id: number) => requests.get(`products/${id}`),
     fetchFilters: () => requests.get('products/filters'),
 }
+=======
+const requests = {
+  get: (url: string, params?: URLSearchParams) =>
+    axios.get(url, { params }).then(ResponseBody),
+  post: (url: string, body: {}) => axios.post(url, body).then(ResponseBody),
+  delete: (url: string) => axios.delete(url).then(ResponseBody),
+};
+
+const Catalog = {
+  list: (params: URLSearchParams) => requests.get("products", params),
+  details: (id: number) => requests.get(`products/${id}`),
+  fetchFilters: () => requests.get("products/filters"),
+};
+>>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
 
 const TestErrors = {
   get400Error: () => requests.get("buggy/GetBadRequest"),
@@ -112,6 +142,7 @@ const Basket = {
   removeItem: (productId: number, quantity = 1) =>
     requests.delete(`basket?productId=${productId}&quantity=${quantity}`),
 };
+<<<<<<< HEAD
 
 const Account = {
   login: (values: any) => requests.post("account/login", values),
@@ -129,6 +160,24 @@ const Payments = {
   createPaymentIntent: () => requests.post("payments", {}),
 };
 
+=======
+
+const Account = {
+  login: (values: any) => requests.post("account/login", values),
+  register: (values: any) => requests.post("account/register", values),
+  currentUser: () => requests.get("account/currentUser"),
+  fetchAddress: () => requests.get("account/savedAddress"),
+};
+const Orders = {
+  list: () => requests.get("orders"),
+  fetch: (id: number) => requests.get(`orders/${id}`),
+  create: (values: any) => requests.post("orders", values),
+};
+
+const Payments = {
+  createPaymentIntent: () => requests.post("payments", {}),
+};
+>>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
 
 const agent = {
   Catalog,

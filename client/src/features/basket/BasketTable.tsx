@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Add, Delete, Remove } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import {
@@ -14,6 +15,24 @@ import { BasketItem } from "../../App/model/Basket";
 import { useAppDispatch, useAppSelector } from "../../App/store/configureStore";
 import { currencyFormat } from "../../App/util/util";
 import { addBasketItemAsync, removeBasketItemAsync } from "./basketSlice";
+=======
+import { Remove, Add, Delete } from "@mui/icons-material";
+import { LoadingButton } from "@mui/lab";
+import {
+  TableContainer,
+  Paper,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  Box,
+} from "@mui/material";
+import { BasketItem } from "../../App/model/Basket";
+import { useAppSelector, useAppDispatch } from "../../App/store/configureStore";
+import { currencyFormat } from "../../App/util/util";
+import { removeBasketItemAsync, addBasketItemAsync } from "./basketSlice";
+>>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
 
 interface Props {
   items: BasketItem[];
@@ -21,10 +40,15 @@ interface Props {
 }
 
 export default function BasketTable({ items, isBasket = true }: Props) {
+<<<<<<< HEAD
 
   const dispatch = useAppDispatch();
   const { basket, status } = useAppSelector((state) => state.basket);
 
+=======
+  const { basket, status } = useAppSelector((state) => state.basket);
+  const dispatch = useAppDispatch();
+>>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -33,8 +57,13 @@ export default function BasketTable({ items, isBasket = true }: Props) {
             <TableCell>Product</TableCell>
             <TableCell align="center">Price</TableCell>
             <TableCell align="center">Quantity</TableCell>
+<<<<<<< HEAD
             <TableCell align="center">Subtotal</TableCell>
             {isBasket &&<TableCell align="center"></TableCell>}
+=======
+            <TableCell align="right">Subtotal</TableCell>
+            {isBasket && <TableCell align="right"></TableCell>}
+>>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
           </TableRow>
         </TableHead>
         <TableBody>
@@ -104,9 +133,13 @@ export default function BasketTable({ items, isBasket = true }: Props) {
                 >
                   <Delete />
                 </LoadingButton>
+<<<<<<< HEAD
               </TableCell>
               )}
 
+=======
+              </TableCell>)}
+>>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
             </TableRow>
           ))}
         </TableBody>

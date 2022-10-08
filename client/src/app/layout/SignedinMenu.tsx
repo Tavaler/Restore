@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "../store/configureStore";
 import { Link } from "react-router-dom";
 import { signOut } from "../../features/account/accountSlice";
 import { clearBasket } from "../../features/basket/basketSlice";
+<<<<<<< HEAD
  
 export default function SignedinMenu() {
   const dispatch = useAppDispatch();
@@ -14,13 +15,23 @@ export default function SignedinMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
  
+=======
+export default function SignedinMenu() {
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.account);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+>>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
+<<<<<<< HEAD
  
+=======
+>>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
   return (
     <>
       <Button onClick={handleClick} color="inherit" sx={{ typography: "h6" }}>
@@ -35,7 +46,11 @@ export default function SignedinMenu() {
         }}
       >
         <MenuItem onClick={handleClose}>Profile</MenuItem>
+<<<<<<< HEAD
         <MenuItem component={Link} to="/orders">
+=======
+        <MenuItem component={Link} to="/order">
+>>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
           My orders
         </MenuItem>
         <MenuItem
@@ -50,4 +65,8 @@ export default function SignedinMenu() {
       </Menu>
     </>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67

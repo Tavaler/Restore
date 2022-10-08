@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { useEffect, useState } from "react";
+=======
+import * as React from "react";
+>>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Stepper from "@mui/material/Stepper";
@@ -9,6 +13,7 @@ import Typography from "@mui/material/Typography";
 import AddressForm from "./AddressForm";
 import PaymentForm from "./PaymentForm";
 import Review from "./Review";
+<<<<<<< HEAD
 import { FormProvider, useForm, FieldValues } from "react-hook-form";
 import { validationSchema } from "./checkoutValidation";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -32,10 +37,42 @@ export default function CheckoutPage() {
     elementError: { [key in StripeElementType]?: string };
   }>({ elementError: {} });
   const [cardComplete, setCardComplete] = useState<any>({
+=======
+import { FieldValues, FormProvider, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { validationSchema } from "./checkoutValidation";
+import { useAppDispatch, useAppSelector } from "../../App/store/configureStore";
+import agent from "../../App/api/agent";
+import { clearBasket } from "../basket/basketSlice";
+import { LoadingButton } from "@mui/lab";
+import { useEffect } from "react";
+import { StripeElementType } from "@stripe/stripe-js";
+import {
+  useStripe,
+  useElements,
+  CardNumberElement,
+} from "@stripe/react-stripe-js";
+
+const steps = ["Shipping address", "Review your order", "Payment details"];
+
+export default function Checkout() {
+  const [activeStep, setActiveStep] = React.useState(0);
+
+  const [orderNumber, setOrderNumber] = React.useState(0);
+  const [loading, setLoading] = React.useState(false);
+  const dispatch = useAppDispatch();
+
+  const [cardState, setCardState] = React.useState<{
+    elementError: { [key in StripeElementType]?: string };
+  }>({ elementError: {} });
+
+  const [cardComplete, setCardComplete] = React.useState<any>({
+>>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
     cardNumber: false,
     cardExpiry: false,
     cardCvc: false,
   });
+<<<<<<< HEAD
  
   //#region เตรียมข้อมูลสำหรับการยืนยัน Order และ Stripe
   const [paymentMessage, setPaymentMessage] = useState("");
@@ -45,6 +82,15 @@ export default function CheckoutPage() {
   const elements = useElements(); //สำหรับอ่านข้อมูลบัตรเครดิต
   //#endregion
  
+=======
+
+  const [paymentMessage, setPaymentMessage] = React.useState("");
+  const [paymentSucceeded, setPaymentSucceeded] = React.useState(false);
+  const { basket } = useAppSelector((state) => state.basket);
+  const stripe = useStripe();
+  const elements = useElements(); //ส าหรับอ่านข้อมูลบัตรเครดิต
+
+>>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
   function onCardInputChange(event: any) {
     setCardState({
       ...cardState,
@@ -55,7 +101,11 @@ export default function CheckoutPage() {
     });
     setCardComplete({ ...cardComplete, [event.elementType]: event.complete });
   }
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
   function submitDisabled(): boolean {
     if (activeStep === steps.length - 1) {
       return (
@@ -68,7 +118,11 @@ export default function CheckoutPage() {
       return !methods.formState.isValid;
     }
   }
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
   function getStepContent(step: number) {
     switch (step) {
       case 0:
@@ -86,8 +140,13 @@ export default function CheckoutPage() {
         throw new Error("Unknown step");
     }
   }
+<<<<<<< HEAD
  
   //#region ทำการสร้าง Order โดยปรับปรุงท้ัง Order และ Stripe.com
+=======
+
+  //#region ท าการสร้าง Order โดยปรบัปรุงท้ัง Order และ Stripe.com
+>>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
   async function submitOrder(data: FieldValues) {
     setLoading(true);
     const { nameOnCard, saveAddress, ...shippingAddress } = data;
@@ -128,7 +187,10 @@ export default function CheckoutPage() {
       setLoading(false);
     }
   }
+<<<<<<< HEAD
  
+=======
+>>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
   const handleNext = async (data: FieldValues) => {
     if (activeStep === steps.length - 1) {
       await submitOrder(data);
@@ -137,6 +199,7 @@ export default function CheckoutPage() {
     }
   };
   //#region
+<<<<<<< HEAD
  
   const handleBack = () => {
     setActiveStep(activeStep - 1);
@@ -144,16 +207,30 @@ export default function CheckoutPage() {
  
   const currentValidationSchema = validationSchema[activeStep];
  
+=======
+  const handleBack = () => {
+    setActiveStep(activeStep - 1);
+  };
+
+  const currentValidationSchema = validationSchema[activeStep];
+>>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
   const methods = useForm({
     mode: "all",
     resolver: yupResolver(currentValidationSchema),
   });
+<<<<<<< HEAD
  
+=======
+>>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
   //โหลดที่อยู่ของ User
   useEffect(() => {
     agent.Account.fetchAddress().then((response) => {
       if (response) {
+<<<<<<< HEAD
         //reset ค่าของ Form ,กำหนด saveAddress: false เพราะโหลดมาแล้ว
+=======
+        //reset ค่าของ Form ,ก าหนด saveAddress: false เพราะโหลดมาแล้ว
+>>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
         methods.reset({
           ...methods.getValues(),
           ...response,
@@ -162,7 +239,11 @@ export default function CheckoutPage() {
       }
     });
   }, [methods]);
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
   return (
     <FormProvider {...methods}>
       <Paper
@@ -179,7 +260,11 @@ export default function CheckoutPage() {
             </Step>
           ))}
         </Stepper>
+<<<<<<< HEAD
         <>
+=======
+        <React.Fragment>
+>>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
           {activeStep === steps.length ? (
             <>
               <Typography variant="h5" gutterBottom>
@@ -208,6 +293,10 @@ export default function CheckoutPage() {
                 )}
                 <LoadingButton
                   loading={loading}
+<<<<<<< HEAD
+=======
+                  // disabled={!methods.formState.isValid}
+>>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
                   disabled={submitDisabled()}
                   variant="contained"
                   type="submit"
@@ -218,8 +307,16 @@ export default function CheckoutPage() {
               </Box>
             </form>
           )}
+<<<<<<< HEAD
         </>
       </Paper>
     </FormProvider>
   );
 }
+=======
+        </React.Fragment>
+      </Paper>
+    </FormProvider>
+  );
+}
+>>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67

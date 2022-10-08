@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
@@ -9,13 +10,34 @@ import { useFormContext } from 'react-hook-form';
 import { StripeInput } from './StripeInput';
 import { CardCvcElement, CardExpiryElement, CardNumberElement } from '@stripe/react-stripe-js';
 import { StripeElementType } from '@stripe/stripe-js';
+=======
+import * as React from "react";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import { useFormContext } from "react-hook-form";
+import AppTextInput from "../../App/components/AppTextInput";
+import { StripeInput } from "./StripeInput";
+import {
+  CardCvcElement,
+  CardExpiryElement,
+  CardNumberElement,
+} from "@stripe/react-stripe-js";
+import { StripeElementType } from "@stripe/stripe-js";
+>>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
 
 interface Props {
   cardState: { elementError: { [key in StripeElementType]?: string } };
   onCardInputChange: (event: any) => void;
 }
+<<<<<<< HEAD
 
 export default function PaymentForm({cardState,onCardInputChange}:Props) {
+=======
+export default function PaymentForm({ cardState, onCardInputChange }: Props) {
+>>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
   const { control } = useFormContext();
   return (
     <React.Fragment>
@@ -39,7 +61,11 @@ export default function PaymentForm({cardState,onCardInputChange}:Props) {
             label="Card number"
             fullWidth
             autoComplete="cc-number"
+<<<<<<< HEAD
             variant="standard"
+=======
+            variant="outlined"
+>>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
             InputLabelProps={{ shrink: true }}
             InputProps={{
               inputComponent: StripeInput,
@@ -49,16 +75,26 @@ export default function PaymentForm({cardState,onCardInputChange}:Props) {
         </Grid>
         <Grid item xs={12} md={6}>
           <TextField
+<<<<<<< HEAD
 
             onChange={onCardInputChange}
             error={!!cardState.elementError.cardExpiry}
             helperText={cardState.elementError.cardExpiry}
 
+=======
+            onChange={onCardInputChange}
+            error={!!cardState.elementError.cardExpiry}
+            helperText={cardState.elementError.cardExpiry}
+>>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
             id="expDate"
             label="Expiry date"
             fullWidth
             autoComplete="cc-exp"
+<<<<<<< HEAD
             variant="standard"
+=======
+            variant="outlined"
+>>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
             InputLabelProps={{ shrink: true }}
             InputProps={{
               inputComponent: StripeInput,
@@ -68,6 +104,7 @@ export default function PaymentForm({cardState,onCardInputChange}:Props) {
         </Grid>
         <Grid item xs={12} md={6}>
           <TextField
+<<<<<<< HEAD
 
             onChange={onCardInputChange}
             error={!!cardState.elementError.cardCvc}
@@ -79,6 +116,16 @@ export default function PaymentForm({cardState,onCardInputChange}:Props) {
             fullWidth
             autoComplete="cc-csc"
             variant="standard"
+=======
+            onChange={onCardInputChange}
+            error={!!cardState.elementError.cardCvc}
+            helperText={cardState.elementError.cardCvc}
+            id="cvv"
+            label="CVV"
+            fullWidth
+            autoComplete="cc-csc"
+            variant="outlined"
+>>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
             InputLabelProps={{ shrink: true }}
             InputProps={{
               inputComponent: StripeInput,
@@ -95,4 +142,8 @@ export default function PaymentForm({cardState,onCardInputChange}:Props) {
       </Grid>
     </React.Fragment>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
