@@ -194,7 +194,7 @@ app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
-    // endpoints.MapFallbackToController("Index", "Fallback");
+    endpoints.MapFallbackToController("Index", "Fallback");
 });
 
 //app.MapControllers();
