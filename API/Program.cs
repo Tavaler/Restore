@@ -2,6 +2,7 @@ using System.Text;
 using API.Data;
 using API.Entities;
 using API.Middleware;
+using API.RequestHelpers;
 using API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -136,6 +137,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<TokenService>();
+builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+
+builder.Services.AddScoped<ImageService>();
 
 builder.Services.AddScoped<PaymentService>();
 #endregion
@@ -190,7 +194,7 @@ app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
-    endpoints.MapFallbackToController("Index", "Fallback");
+    // endpoints.MapFallbackToController("Index", "Fallback");
 });
 
 //app.MapControllers();

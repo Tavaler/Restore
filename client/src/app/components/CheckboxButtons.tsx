@@ -5,17 +5,11 @@ interface Props {
   checked?: string[];
   onChange: (items: string[]) => void;
 }
-<<<<<<< HEAD
 
 export default function CheckboxButtons({ items, checked, onChange }: Props) {
   const [checkedItems, setCheckedItems] = useState(checked || []);
 
   //จัดการค่าที่เลือก/ยกเลิก ใส่ array
-=======
-export default function CheckboxButtons({ items, checked, onChange }: Props) {
-  const [checkedItems, setCheckedItems] = useState(checked || []);
-  //จัดกํารค่ําที่เลือก/ยกเลิก ใส่ array
->>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
   function handleChecked(value: string) {
     const currentIndex = checkedItems.findIndex((item) => item === value);
     let newChecked: string[] = [];

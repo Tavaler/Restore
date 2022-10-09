@@ -10,31 +10,16 @@ import {
   TableCell,
   TextField,
 } from "@mui/material";
-<<<<<<< HEAD
 import { useEffect, useState } from "react";
-=======
-import React, { useEffect, useState } from "react";
->>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
 import { useParams } from "react-router-dom";
 import NotFound from "../../App/errors/NotFound";
 import LoadingComponent from "../../App/layout/LoadingComponent";
 import { useAppDispatch, useAppSelector } from "../../App/store/configureStore";
-<<<<<<< HEAD
 import { addBasketItemAsync, removeBasketItemAsync, } from "../basket/basketSlice";
 import { fetchProductAsync, productSelectors } from "./catalogSlice";
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: any }>(); //อ่านค่าจากพารามิเตอร์ที่ส่งมาตามพาท (URL Parameters)
-=======
-import {
-  addBasketItemAsync,
-  removeBasketItemAsync,
-} from "../basket/basketSlice";
-import { fetchProductAsync, productSelectors } from "./catalogSlice";
-
-const ProductDetail = () => {
-  const { id } = useParams<{ id: any }>(); //อ่ำนค่ำจำกพำรำมิเตอร์ที่ส่งมำตำมพำท (URL Parameters)
->>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
   const product = useAppSelector((state) =>
     productSelectors.selectById(state, id)
   );
@@ -43,21 +28,12 @@ const ProductDetail = () => {
   const dispatch = useAppDispatch();
   const { basket, status } = useAppSelector((state) => state.basket);
   const [quantity, setQuantity] = useState(0);
-<<<<<<< HEAD
-=======
-  // ไปดูในตะกร้าก่อนว่ามีหรือไม่มี
->>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
   const item = basket?.items.find((i) => i.productId === product?.id);
 
   useEffect(() => {
     if (item) setQuantity(item.quantity);
-<<<<<<< HEAD
 
     if (!product) dispatch(fetchProductAsync(parseInt(id)));
-=======
-    if (!product) dispatch(fetchProductAsync(parseInt(id)));
-    // ถ้า id, item, dispatch, product มีการเปลี่ยเเปลงจะรีเฟส
->>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
   }, [id, item, dispatch, product]);
 
   function handleInputChange(event: any) {
@@ -86,12 +62,8 @@ const ProductDetail = () => {
     }
   }
 
-<<<<<<< HEAD
   if (productStatus.includes("pending"))
     return <LoadingComponent message="Loading Products....." />;
-=======
-  if (productStatus.includes('pending')) return <LoadingComponent message="LoadingProducts....." />;  
->>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
   if (!product) return <NotFound />;
   return (
     <Grid container spacing={6}>

@@ -4,8 +4,8 @@ import {
   createSlice,
 } from "@reduxjs/toolkit";
 import agent from "../../App/api/agent";
-import { MetaData } from "../../App/model/pagination";
-import { Product, ProductParams } from "../../App/model/Product";
+import { MetaData } from "../../App/models/pagination";
+import { Product, ProductParams } from "../../App/models/Product";
 import { RootState } from "../../App/store/configureStore";
 
 interface CatalogState {
@@ -111,6 +111,16 @@ export const catalogSlice = createSlice({
       state.productsLoaded = false;
       state.productParams = { ...state.productParams, ...action.payload };
     },
+
+    setProduct: (state, action) => {
+      productsAdapter.upsertOne(state, action.payload);
+      state.productsLoaded = false;
+    },
+    removeProduct: (state, action) => {
+      productsAdapter.removeOne(state, action.payload); //มีไว้ทำอะไร
+      state.productsLoaded = false; //state เปลี่ยนไปทำการโหลดข้อมูลมาใหม่ที่ useProduct.tsx
+    },
+
   },
   extraReducers: (builder) => {
     builder.addCase(fetchProductsAsync.pending, (state) => {
@@ -155,5 +165,11 @@ export default catalogSlice.reducer;
 export const productSelectors = productsAdapter.getSelectors(
   (state: RootState) => state.catalog
 );
-export const { setProductParams, resetProductParams, setMetaData, setPageNumber } =
-  catalogSlice.actions;
+export const {
+  setProductParams,
+  resetProductParams,
+  setMetaData,
+  setPageNumber,
+  setProduct,
+  removeProduct
+} = catalogSlice.actions;

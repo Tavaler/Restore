@@ -1,15 +1,9 @@
 import { Grid } from "@mui/material";
 import React from "react";
-import { Product } from "../../App/model/Product";
-<<<<<<< HEAD
+import { Product } from "../../App/models/Product";
 import ProductCardSkeleton from "./ProductCardSkeleton";
 import ProductCrad from "./ProductCard";
 import { useAppSelector } from "../../App/store/configureStore";
-=======
-import { useAppSelector } from "../../App/store/configureStore";
-import ProductCardSkeleton from "./ProductCardSkeleton";
-import ProductCrad from "./ProductCrad";
->>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
 
 interface Props {
   products: Product[];

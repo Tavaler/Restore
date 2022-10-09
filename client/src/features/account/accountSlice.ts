@@ -3,7 +3,7 @@ import { FieldValues } from "react-hook-form";
 import { toast } from "react-toastify";
 import { history } from "../..";
 import agent from "../../App/api/agent";
-import { User } from "../../App/model/User";
+import { User } from "../../App/models/User";
 import { setBasket } from "../basket/basketSlice";
  
 interface AccountState {
@@ -56,35 +56,50 @@ export const fetchCurrentUser = createAsyncThunk<User>(
 
  
 export const accountSlice = createSlice({
-    name: 'account',
-    initialState,
-    reducers: {
-        signOut: (state) => {
-            state.user = null;
-            localStorage.removeItem('user');
-            history.push('/')
-        },
-        setUser: (state, action) => {
-            state.user = action.payload;
-        }
+  name: "account",
+  initialState,
+  reducers: {
+    signOut: (state) => {
+      state.user = null;
+      localStorage.removeItem("user");
+      history.push("/");
     },
-    extraReducers:(builder =>{
-        builder.addCase(fetchCurrentUser.rejected, (state) => {
-            state.user = null;
-            localStorage.removeItem('user');
-            toast.error('Session expired - please login again');
-            history.push('/');
-        });
-        builder.addMatcher(isAnyOf(signInUser.fulfilled, fetchCurrentUser.fulfilled), (state, action) => {
-            state.user = action.payload;
-        });
-        builder.addMatcher(isAnyOf(signInUser.rejected), (state, action) => {
-            throw action.payload;
-         }); 
+    setUser: (state, action) => {
+      //ดึงเฉพาะ Roles จาก Token
+      let claims = JSON.parse(window.atob(action.payload.token.split(".")[1]));
+      let roles =
+        claims["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+      //ตรวจสอบกรณีมีหลาย Roles = ["Menber","Admin"]
+      state.user = {
+        ...action.payload,
+        roles: typeof roles === "string" ? [roles] : roles,
+      };
+    },
 
-    })
+    // setUser: (state, action) => {
+    //     state.user = action.payload;
+    // }
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchCurrentUser.rejected, (state) => {
+      state.user = null;
+      localStorage.removeItem("user");
+      toast.error("Session expired - please login again");
+      history.push("/");
+    });
+    builder.addMatcher(isAnyOf(signInUser.fulfilled, fetchCurrentUser.fulfilled), (state, action:any) => {
+        //ดึงเฉพาะ Roles จาก Token
+        let claims = JSON.parse(window.atob(action.payload.token.split('.')[1]));
+        let roles = claims['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+        //ตรวจสอบกรณีมีหลาย Roles = ["Menber","Admin"]
+        state.user = {...action.payload, roles: typeof(roles) === 'string' ? [roles] : roles};
+    });
 
-})
+    builder.addMatcher(isAnyOf(signInUser.rejected), (state, action) => {
+      throw action.payload;
+    });
+  },
+});
 
 export const {signOut,setUser} = accountSlice.actions
 

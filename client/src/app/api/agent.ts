@@ -2,14 +2,14 @@ import axios, { Axios, AxiosError, AxiosResponse } from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { history } from "../..";
-import { PaginatedResponse } from "../model/pagination";
+import { PaginatedResponse } from "../models/pagination";
 import { store } from "../store/configureStore";
 
-axios.defaults.baseURL = process.env.REACT_APP_API_URL
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 axios.defaults.withCredentials = true; //อนุญําตให้เข้ําถึงคุกกี้ที่ browser ได้
 
-axios.defaults.baseURL = process.env.REACT_APP_API_URL
- 
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+
 // if(process.env.NODE_ENV === 'development') await sleep()
 
 const ResponseBody = (response: AxiosResponse) => response.data;
@@ -23,32 +23,9 @@ axios.interceptors.request.use((config: any) => {
 
 const sleep = () => new Promise((_) => setTimeout(_, 500));
 
-<<<<<<< HEAD
-
-//แนบ token ไปกับ Header
-axios.interceptors.request.use((config: any) => {
-  const token = store.getState().account.user?.token; //เรียกใช้ State โดยตรง
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
-})
-
-
-//You can intercept requests or responses before they are handled by then or catch.
-//.use มี Promise คือ onFullfill กรณีสำเร็จ onReject กรณีมีข้อผิดพลาด
-axios.interceptors.response.use(async response => {
-  if(process.env.NODE_ENV === 'development')  await sleep()
-
-  //ส่งค่ามาจากฝั่ง API Response.AddPaginationHeader(products.MetaData); 
-    const pagination = response.headers['pagination']; //ส่งมาจาก ProductController
-    if (pagination) {
-        response.data = new PaginatedResponse(response.data, JSON.parse(pagination));
-        return response;
-    }
-    
-=======
 axios.interceptors.response.use(
   async (response) => {
-    if(process.env.NODE_ENV === 'development') await sleep()
+    if (process.env.NODE_ENV === "development") await sleep();
     const pagination = response.headers["pagination"]; //ส่งมําจําก ProductController
     if (pagination) {
       response.data = new PaginatedResponse(
@@ -58,7 +35,6 @@ axios.interceptors.response.use(
       return response;
     }
 
->>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
     return response;
   },
   (error: AxiosError) => {
@@ -83,6 +59,9 @@ axios.interceptors.response.use(
       case 401:
         toast.error(result.title);
         break;
+      case 403:
+        toast.error("You are not allowed to do that!");
+        break;
       case 404:
         toast.error(result.title);
         break;
@@ -97,27 +76,42 @@ axios.interceptors.response.use(
   }
 );
 
-<<<<<<< HEAD
 //params?: URLSearchParams ใช้รับค่าพารามิเตอ์แบบออบเจคที่มีหลายๆค่า เทีบบเท่า query string
-const requests = {
-    get: (url: string, params?: URLSearchParams) => axios.get(url, {params}).then(ResponseBody),
-    post: (url: string, body: {}) => axios.post(url, body).then(ResponseBody),
-    // put: (url: string, body: {}) => axios.put(url, body).then(ResponseBody),
-    delete: (url: string) => axios.delete(url).then(ResponseBody),
- 
-}
- 
-const Catalog = {
-    list: (params: URLSearchParams) => requests.get('products', params),
-    details: (id: number) => requests.get(`products/${id}`),
-    fetchFilters: () => requests.get('products/filters'),
-}
-=======
 const requests = {
   get: (url: string, params?: URLSearchParams) =>
     axios.get(url, { params }).then(ResponseBody),
   post: (url: string, body: {}) => axios.post(url, body).then(ResponseBody),
+  // put: (url: string, body: {}) => axios.put(url, body).then(ResponseBody),
   delete: (url: string) => axios.delete(url).then(ResponseBody),
+
+  postForm: (url: string, data: FormData) =>
+    axios
+      .post(url, data, {
+        headers: { "Content-type": "multipart/form-data" },
+      })
+      .then(ResponseBody),
+  putForm: (url: string, data: FormData) =>
+    axios
+      .put(url, data, {
+        headers: { "Content-type": "multipart/form-data" },
+      })
+      .then(ResponseBody),
+};
+
+function createFormData(item: any) {
+  let formData = new FormData();
+  for (const key in item) {
+    formData.append(key, item[key]);
+  }
+  return formData;
+}
+
+const Admin = {
+  createProduct: (product: any) =>
+    requests.postForm("products", createFormData(product)),
+  updateProduct: (product: any) =>
+    requests.putForm("products", createFormData(product)),
+  deleteProduct: (id: number) => requests.delete(`products/${id}`),
 };
 
 const Catalog = {
@@ -125,7 +119,6 @@ const Catalog = {
   details: (id: number) => requests.get(`products/${id}`),
   fetchFilters: () => requests.get("products/filters"),
 };
->>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
 
 const TestErrors = {
   get400Error: () => requests.get("buggy/GetBadRequest"),
@@ -142,7 +135,6 @@ const Basket = {
   removeItem: (productId: number, quantity = 1) =>
     requests.delete(`basket?productId=${productId}&quantity=${quantity}`),
 };
-<<<<<<< HEAD
 
 const Account = {
   login: (values: any) => requests.post("account/login", values),
@@ -159,25 +151,6 @@ const Orders = {
 const Payments = {
   createPaymentIntent: () => requests.post("payments", {}),
 };
-
-=======
-
-const Account = {
-  login: (values: any) => requests.post("account/login", values),
-  register: (values: any) => requests.post("account/register", values),
-  currentUser: () => requests.get("account/currentUser"),
-  fetchAddress: () => requests.get("account/savedAddress"),
-};
-const Orders = {
-  list: () => requests.get("orders"),
-  fetch: (id: number) => requests.get(`orders/${id}`),
-  create: (values: any) => requests.post("orders", values),
-};
-
-const Payments = {
-  createPaymentIntent: () => requests.post("payments", {}),
-};
->>>>>>> 23fd86af05bdbcdb733d0f9b29d1795a3d1d5d67
 
 const agent = {
   Catalog,
@@ -185,7 +158,8 @@ const agent = {
   Basket,
   Account,
   Orders,
-  Payments
+  Payments,
+  Admin,
 };
 
 export default agent;
