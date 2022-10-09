@@ -198,5 +198,5 @@ app.UseEndpoints(endpoints =>
 });
 
 //app.MapControllers();
-
+// แบบปกติ
 await app.RunAsync();
